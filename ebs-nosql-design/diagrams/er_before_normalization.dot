@@ -1,0 +1,207 @@
+graph EBS_Before_Normalization {
+  graph [rankdir=TB, splines=ortho, nodesep=0.6, ranksep=0.8,
+         fontname="Arial", label="EBS — Before Normalization\n(Repeating Groups · Transitive Dependencies · 1NF Violations)",
+         labelloc=t, fontsize=16]
+  node [fontname="Arial", fontsize=11]
+  edge [fontname="Arial", fontsize=10]
+
+  node [shape=rectangle, style=filled, fillcolor="#FFF8E7",
+        color="#AA6600", penwidth=2]
+
+  USER
+  SELLER
+  CATEGORY
+  PRODUCT
+  CART
+  ORDER
+  REVIEW
+  PAYMENT
+
+  node [shape=ellipse, style=filled, fillcolor="#F0F0FF",
+        color="#445588", penwidth=1.2]
+
+  u_id      [label="user_id\n(PK)", style="filled,bold"]
+  u_name    [label="name"]
+  u_email   [label="email\n(unique)"]
+  u_phone   [label="phone"]
+  u_pwd     [label="password_hash"]
+  u_cat     [label="created_at"]
+  u_addr1   [label="address_1_line1\ncity · state\npincode · is_default", style="dashed", color="#AA2222"]
+  u_addr2   [label="address_2_line1\ncity · state\npincode · is_default", style="dashed", color="#AA2222"]
+
+  s_id      [label="seller_id\n(PK)", style="filled,bold"]
+  s_bname   [label="business_name"]
+  s_email   [label="email\n(unique)"]
+  s_phone   [label="phone"]
+  s_gst     [label="gst_number\n(unique)"]
+  s_rating  [label="rating"]
+  s_joined  [label="joined_at"]
+
+  c_id      [label="category_id\n(PK)", style="filled,bold"]
+  c_name    [label="category_name"]
+  c_desc    [label="description"]
+  c_parent  [label="parent_category_name", style="dashed", color="#AA2222"]
+  c_gparent [label="grandparent_category_name", style="dashed", color="#AA2222"]
+
+  p_id      [label="product_id\n(PK)", style="filled,bold"]
+  p_sid     [label="seller_id\n(FK)"]
+  p_cid     [label="category_id\n(FK)"]
+  p_name    [label="name"]
+  p_desc    [label="description"]
+  p_price   [label="price"]
+  p_disc    [label="discount"]
+  p_stock   [label="stock_quantity"]
+  p_rating  [label="average_rating"]
+  p_cat     [label="created_at"]
+  p_sname   [label="seller_business_name", style="dashed", color="#AA7700"]
+  p_cname   [label="category_name", style="dashed", color="#AA7700"]
+  p_v1      [label="variant_1\nsize·colour·storage·price·stock", style="dashed", color="#AA2222"]
+  p_v2      [label="variant_2\nsize·colour·storage·price·stock", style="dashed", color="#AA2222"]
+  p_img1    [label="image_url_1", style="dashed", color="#AA2222"]
+  p_img2    [label="image_url_2", style="dashed", color="#AA2222"]
+  p_img3    [label="image_url_3", style="dashed", color="#AA2222"]
+
+  ca_id     [label="cart_id\n(PK)", style="filled,bold"]
+  ca_uid    [label="user_id\n(FK, UNIQUE)"]
+  ca_upd    [label="updated_at"]
+  ca_i1     [label="item_1\nproduct_id·qty·added_at", style="dashed", color="#AA2222"]
+  ca_i2     [label="item_2\nproduct_id·qty·added_at", style="dashed", color="#AA2222"]
+
+  o_id      [label="order_id\n(PK)", style="filled,bold"]
+  o_uid     [label="user_id\n(FK)"]
+  o_status  [label="order_status"]
+  o_amt     [label="total_amount"]
+  o_placed  [label="placed_at"]
+  o_deliv   [label="delivered_at"]
+  o_i1      [label="item_1\nproduct_id·name·seller_id·name·qty·price", style="dashed", color="#AA2222"]
+  o_i2      [label="item_2\nproduct_id·name·seller_id·name·qty·price", style="dashed", color="#AA2222"]
+
+  r_id      [label="review_id\n(PK)", style="filled,bold"]
+  r_pid     [label="product_id\n(FK)"]
+  r_uid     [label="user_id\n(FK)"]
+  r_rating  [label="rating"]
+  r_title   [label="title"]
+  r_body    [label="body"]
+  r_ver     [label="verified"]
+  r_cat     [label="created_at"]
+  r_pname   [label="product_name", style="dashed", color="#AA7700"]
+  r_uname   [label="user_name", style="dashed", color="#AA7700"]
+
+  pay_id    [label="payment_id\n(PK)", style="filled,bold"]
+  pay_oid   [label="order_id\n(FK, UNIQUE)"]
+  pay_uid   [label="user_id\n(transitive)", style="dashed", color="#AA7700"]
+  pay_email [label="user_email\n(transitive)", style="dashed", color="#AA7700"]
+  pay_amt   [label="amount"]
+  pay_meth  [label="method"]
+  pay_txn   [label="transaction_id\n(unique)"]
+  pay_stat  [label="payment_status"]
+  pay_date  [label="paid_at"]
+
+  node [shape=diamond, style=filled, fillcolor="#E8F8E8",
+        color="#226622", penwidth=2, fontsize=11]
+
+  Places     [label="Places\n1:N"]
+  Has_Cart   [label="Has\n1:1"]
+  Writes     [label="Writes\n1:N"]
+  Makes      [label="Makes\n1:N"]
+  Lists      [label="Lists\n1:N"]
+  Classifies [label="Classifies\n1:N"]
+  Receives   [label="Receives\n1:N"]
+  SettledBy  [label="Settled By\n1:1"]
+
+  USER -- u_id
+  USER -- u_name
+  USER -- u_email
+  USER -- u_phone
+  USER -- u_pwd
+  USER -- u_cat
+  USER -- u_addr1
+  USER -- u_addr2
+
+  SELLER -- s_id
+  SELLER -- s_bname
+  SELLER -- s_email
+  SELLER -- s_phone
+  SELLER -- s_gst
+  SELLER -- s_rating
+  SELLER -- s_joined
+
+  CATEGORY -- c_id
+  CATEGORY -- c_name
+  CATEGORY -- c_desc
+  CATEGORY -- c_parent
+  CATEGORY -- c_gparent
+
+  PRODUCT -- p_id
+  PRODUCT -- p_sid
+  PRODUCT -- p_cid
+  PRODUCT -- p_name
+  PRODUCT -- p_desc
+  PRODUCT -- p_price
+  PRODUCT -- p_disc
+  PRODUCT -- p_stock
+  PRODUCT -- p_rating
+  PRODUCT -- p_cat
+  PRODUCT -- p_sname
+  PRODUCT -- p_cname
+  PRODUCT -- p_v1
+  PRODUCT -- p_v2
+  PRODUCT -- p_img1
+  PRODUCT -- p_img2
+  PRODUCT -- p_img3
+
+  CART -- ca_id
+  CART -- ca_uid
+  CART -- ca_upd
+  CART -- ca_i1
+  CART -- ca_i2
+
+  ORDER -- o_id
+  ORDER -- o_uid
+  ORDER -- o_status
+  ORDER -- o_amt
+  ORDER -- o_placed
+  ORDER -- o_deliv
+  ORDER -- o_i1
+  ORDER -- o_i2
+
+  REVIEW -- r_id
+  REVIEW -- r_pid
+  REVIEW -- r_uid
+  REVIEW -- r_rating
+  REVIEW -- r_title
+  REVIEW -- r_body
+  REVIEW -- r_ver
+  REVIEW -- r_cat
+  REVIEW -- r_pname
+  REVIEW -- r_uname
+
+  PAYMENT -- pay_id
+  PAYMENT -- pay_oid
+  PAYMENT -- pay_uid
+  PAYMENT -- pay_email
+  PAYMENT -- pay_amt
+  PAYMENT -- pay_meth
+  PAYMENT -- pay_txn
+  PAYMENT -- pay_stat
+  PAYMENT -- pay_date
+
+  USER     -- Places;     Places     -- ORDER
+  USER     -- Has_Cart;   Has_Cart   -- CART
+  USER     -- Writes;     Writes     -- REVIEW
+  USER     -- Makes;      Makes      -- PAYMENT
+  SELLER   -- Lists;      Lists      -- PRODUCT
+  CATEGORY -- Classifies; Classifies -- PRODUCT
+  PRODUCT  -- Receives;   Receives   -- REVIEW
+  ORDER    -- SettledBy;  SettledBy  -- PAYMENT
+
+  node [shape=plaintext, fillcolor=none, color=none]
+  legend [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="4" BGCOLOR="#FFFFF0">
+      <TR><TD ALIGN="LEFT"><B>Legend</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Solid ellipse = normal attribute</TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT COLOR="#AA2222">Dashed red ellipse = repeating group (1NF violation)</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT COLOR="#AA7700">Dashed orange ellipse = transitive dependency</FONT></TD></TR>
+    </TABLE>
+  >]
+}
